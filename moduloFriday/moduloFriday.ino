@@ -19,8 +19,8 @@ SSD1306  display(0x3c, D1, D2);
 ESP8266WebServer server ( 80 );
 DHT dht(DHTPIN, DHTTYPE);
 
-const char *ssid = "MOVISTARTL";
-const char *password = "Martin89";
+const char *ssid = "tuSSID";
+const char *password = "elPasswordDeTuWifi";
 const int id = ESP.getChipId();
 
 const char WiFi_Logo_bits[] PROGMEM = {

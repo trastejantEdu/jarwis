@@ -1,4 +1,3 @@
-#include <Time.h>
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
 #include <ESP8266WiFiMulti.h>
@@ -8,9 +7,6 @@
 #include <ESP8266HTTPClient.h>
 #include "DHT.h"
 #include "SSD1306.h"
-#include "confi.h"
-#include "NTP.h"
-#include "OLED_Display.h"
 
 #define USE_SERIAL Serial
 #define DHTPIN D4
@@ -19,16 +15,13 @@
 #define DHTTYPE DHT22
 
 ESP8266WiFiMulti WiFiMulti;
+SSD1306  display(0x3c, D1, D2);
 ESP8266WebServer server ( 80 );
 DHT dht(DHTPIN, DHTTYPE);
-NTP ntp;
 
+const char *ssid = "MOVISTARTL";
+const char *password = "Martin89";
 const int id = ESP.getChipId();
-
-//inicializacion con valores no validos
-int hora = 25;
-int minuto= 62;
-int segundo = 62;
 
 const char WiFi_Logo_bits[] PROGMEM = {
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xF8,
@@ -58,22 +51,9 @@ const char WiFi_Logo_bits[] PROGMEM = {
 };
 
 
-
+String url = "http://192.168.1.33/FRIDAY/registrador.php?id=";
 int progress;
-
-
-void confHora(){
-  while ( hora > 24 ){hora = ntp.get_hour();}
-  while ( minuto > 60 ){minuto = ntp.get_minutes();}
-  while ( segundo > 60 ){segundo = ntp.get_secons();}
-  hora = hora + UTC;//Implementar deteccion de horairo de verano/invierno
-  setTime(hora,minuto,segundo,16,04,2017);//¡Implentar la getFecha en la libreria NTP!  
-}
-
-String return_hora(){
-  time_t t = now();  
-  return String(hour(t))+":"+String(minute(t));
-}
+int frecuencia = 10000;
 
 void setup() {
 
@@ -81,10 +61,19 @@ void setup() {
     display.drawXbm(34, 0, WiFi_Logo_width, WiFi_Logo_height, WiFi_Logo_bits);
     display.display();
     USE_SERIAL.begin(115200);
+   // USE_SERIAL.setDebugOutput(true);
 
     USE_SERIAL.println();
     USE_SERIAL.println();
     USE_SERIAL.println();
+
+    /**
+    for(uint8_t t = 4; t > 0; t--) {
+        USE_SERIAL.printf("[SETUP] WAIT %d...\n", t);
+        USE_SERIAL.flush();
+        delay(1000);
+    }
+    **/
     
     WiFi.begin(ssid,password);
 
@@ -103,11 +92,6 @@ void setup() {
  Serial.println ( ssid );
  Serial.print ( "IP address: " );
  Serial.println ( WiFi.localIP() );
- Serial.print("Chip ID");
- Serial.println(id);
-
- ntp.begin();
- confHora();
  
  if ( MDNS.begin ( "esp8266" ) ) {
   Serial.println ( "MDNS responder started" );
@@ -115,27 +99,49 @@ void setup() {
 
  Serial.println ( "HTTP server started" );
  display.clear();
- 
- String ssid_str = String(ssid);
- pantalla_info(id,ssid_str, WiFi.localIP().toString());
- delay(3000);
-}//Fin de la función Setup
+}
 
 void loop() {
-  //Lectura de sensores 
-  int humedad = dht.readHumidity();  
+  //Lectura de sensores y actualización de la hora
+  int humedad = dht.readHumidity();
+  String humedadNow = String(humedad); 
+  int hora = 12;
+  int minuto = 10;
+
+  //cast de los datos obtenidos para motrarlos por pantalla
   int temperatura = dht.readTemperature();
-  Serial.print("H:");
-  Serial.println(humedad);
-  Serial.print("T:");
-  Serial.println(temperatura);
-  pantalla_datos(return_hora(), temperatura, humedad);
+  String temperaturaNow = String(temperatura); 
+  String horaNow = String(hora);
+  String minutoNow = String(minuto);
+
+  //Mostramos por pantalla la información
+  display.clear();
+ display.setTextAlignment(TEXT_ALIGN_CENTER);
+ display.setFont(ArialMT_Plain_16);
+    display.drawString(60, 0, "Jarvis");
+    display.drawHorizontalLine(5, 17, 110);
+    display.setTextAlignment(TEXT_ALIGN_LEFT);
+    display.setFont(ArialMT_Plain_10);
+    display.drawString(0, 20, "En:");
+    display.drawString(30, 20, ssid);
+    display.setFont(ArialMT_Plain_10);
+    display.drawString(0, 30, "IP:");
+    display.drawString(15, 30, WiFi.localIP().toString());
+
+    display.drawString(0, 50, "T:");
+    display.drawString(10, 50, temperaturaNow);
+    display.drawString(23, 50, "ºC");
+    display.drawString(50, 50, "H:");
+    display.drawString(60, 50, humedadNow);
+    display.drawString(70, 50, "%");
+    display.drawString(90, 50, horaNow);
+    display.drawString(105, 50, ":");
+    display.drawString(110, 50, minutoNow);
+    display.display();
+    //delay(500);
     
     //Si tenemos conexión a internet enviamos los datos al servidor
     if((WiFiMulti.run() == WL_CONNECTED)) {
-        //cast de datos
-        String humedadNow = String(humedad); 
-        String temperaturaNow = String(temperatura); 
         
         HTTPClient http;
 

@@ -6,22 +6,26 @@
 #include <ESP8266mDNS.h>
 #include <Wire.h>
 #include <ESP8266HTTPClient.h>
-#include "DHT.h"
+
+
 #include "SSD1306.h"
 #include "confi.h"
 #include "NTP.h"
 #include "OLED_Display.h"
+#include "web.h"
+
+//#include "sensores.h"
 
 #define USE_SERIAL Serial
-#define DHTPIN D4
 #define WiFi_Logo_width 60
 #define WiFi_Logo_height 36
-#define DHTTYPE DHT22
+
+
 
 ESP8266WiFiMulti WiFiMulti;
-ESP8266WebServer server ( 80 );
-DHT dht(DHTPIN, DHTTYPE);
+
 NTP ntp;
+
 
 const int id = ESP.getChipId();
 
@@ -59,6 +63,7 @@ const char WiFi_Logo_bits[] PROGMEM = {
 
 
 
+
 int progress;
 
 
@@ -78,7 +83,8 @@ String return_hora(){
 void setup() {
 
     display.init();
-    display.drawXbm(34, 0, WiFi_Logo_width, WiFi_Logo_height, WiFi_Logo_bits);
+    if(flipDisplay) display.flipScreenVertically();
+    display.drawXbm(34, 20, WiFi_Logo_width, WiFi_Logo_height, WiFi_Logo_bits);
     display.display();
     USE_SERIAL.begin(115200);
 
@@ -87,6 +93,7 @@ void setup() {
     USE_SERIAL.println();
     
     WiFi.begin(ssid,password);
+    rgb_begin();
 
   while ( WiFi.status() != WL_CONNECTED ) {
     progress= progress + 20;
@@ -94,7 +101,7 @@ void setup() {
     Serial.print ( "." );
     //display.print(".");
     if(progress>=100) progress=0;
-    display.drawProgressBar(0, 52, 120, 10, progress);
+    display.drawProgressBar(0, 0, 120, 10, progress);
     display.display();
   }
 
@@ -113,6 +120,16 @@ void setup() {
   Serial.println ( "MDNS responder started" );
  }
 
+  //Configuracion de la navegacion
+  server.on("/", bienvenida);
+  server.on("/control", control);
+  server.on("/lecturas", lecturas);
+  server.on("/about", about);
+
+
+//Inicializacion del servidor web
+  server.begin();
+
  Serial.println ( "HTTP server started" );
  display.clear();
  
@@ -123,19 +140,20 @@ void setup() {
 
 void loop() {
   //Lectura de sensores 
-  int humedad = dht.readHumidity();  
-  int temperatura = dht.readTemperature();
+  
   Serial.print("H:");
-  Serial.println(humedad);
+  Serial.println(readHumedadStr());
   Serial.print("T:");
-  Serial.println(temperatura);
-  pantalla_datos(return_hora(), temperatura, humedad);
+  Serial.println(readTemperaturaStr());
+  
+  pantalla_datos(return_hora(), readTemperatura(), readHumedad());
     
     //Si tenemos conexión a internet enviamos los datos al servidor
+    
     if((WiFiMulti.run() == WL_CONNECTED)) {
         //cast de datos
-        String humedadNow = String(humedad); 
-        String temperaturaNow = String(temperatura); 
+        //String humedadNow = String(humedad); 
+        //String temperaturaNow = String(temperatura); 
         
         HTTPClient http;
 
@@ -144,9 +162,9 @@ void loop() {
         //Envia la info para ser almacenada en el servidor
         url = url += id;
         url = url += "&temperatura=";
-        url = url += temperaturaNow;
+        url = url += readTemperaturaStr();
         url = url += "&humedad=";
-        url = url += humedadNow;
+        url = url += readHumedadStr();
         
         http.begin(url);
 
@@ -173,5 +191,7 @@ void loop() {
     }
 
     delay(frecuencia);
+    
+    server.handleClient();
 }
 

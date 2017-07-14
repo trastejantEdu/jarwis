@@ -7,8 +7,11 @@
    if (F_CPU == 16000000) clock_prescale_set(clock_div_1);
 #endif
 
-#define PIN 4
-#define NUMPIXELS 16
+#define PIN D3
+#define NUMPIXELS 4
+
+
+Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
 
 String R,G,B;
 int Ri, Gi, Bi;
@@ -17,7 +20,10 @@ String intensidad;
 int Ii;
 
 void rgb_begin(){
-  
+  Serial.println("INICIALIZADA LIBRERIA NEOPIXEL");
+  pixels.begin();
+   pixels.setPixelColor(1, (0, 255, 255)); //full-bright cyan
+   pixels.show();
 }
 
 

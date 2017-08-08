@@ -881,6 +881,27 @@ void low_battery(){
     
 }
 
+void high_signal(){
+  //fillRect(int16_t x, int16_t y, int16_t width, int16_t height);
+  display.fillRect(110, 0, 5, 5);
+  display.fillRect(116, 0, 5, 7);
+  display.fillRect(122, 0, 5, 10);
+  
+}
+
+void med_signal(){
+  display.fillRect(110, 0, 5, 5);
+  display.fillRect(116, 0, 5, 7);
+}
+
+void low_signal(){
+  display.fillRect(110, 0, 5, 5);
+}
+
+void no_signal(){
+  display.drawCircle(110, 0, 5);
+}
+
 void pantalla_info(int id, String ssid, String IP){
     //Mostramos por pantalla la información
     display.clear();
@@ -920,8 +941,16 @@ void pantalla_datos(String hora, int temperatura, int humedad){
     display.drawString(50, 0, "H:");
     display.drawString(60, 0, humedadNow);
     display.drawString(70, 0, "%");  
+    
     //display.drawXbm(110, 0, ico_width, ico_height, WiFi_Status_OK);
-    if(WiFi.status() == WL_CONNECTED){display.drawString(110, 0, "Connect");}else{display.drawString(110, 0, "N/C");}
+    if(WiFi.status() == WL_CONNECTED){
+      //display.drawString(110, 0, "Connect");
+      high_signal();
+    }else{
+      //display.drawString(110, 0, "N/C");
+      no_signal();
+    }
+    
     display.display();
   
   }

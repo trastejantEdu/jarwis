@@ -6,6 +6,8 @@ SSD1306  display(0x3c, D1, D2);
 #define ico_width 20
 #define ico_height 20
 
+int sennal = 90;
+
 const char WiFi_Status_OK[] PROGMEM = {
 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 
 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 
@@ -942,10 +944,29 @@ void pantalla_datos(String hora, int temperatura, int humedad){
     display.drawString(60, 0, humedadNow);
     display.drawString(70, 0, "%");  
     
-    //display.drawXbm(110, 0, ico_width, ico_height, WiFi_Status_OK);
+    /** Comprobación del enlace e intensidad de la conexión **
+     *  ------------ Valores de la escala RSSI ---------------      
+     *  0 Señal ideal
+     * -40 a -60 Señal excelente
+     * -60 a -70 Señal Buena
+     * -70 a -80 Señal Normal/baja
+     * <-80 Señal minima o insuficiente
+    */
     if(WiFi.status() == WL_CONNECTED){
       //display.drawString(110, 0, "Connect");
-      high_signal();
+      sennal = WiFi.RSSI();   //Intensidad de la señal
+      sennal = sennal * -1;   //Cambio de signo
+
+      if(0<=sennal<=60){
+        high_signal();  
+      }else if(61<=sennal<=70){
+        med_signal();
+      }else if(71<=sennal<=80){
+        low_signal();
+      }else if(80<sennal){
+        no_signal();
+      }
+      
     }else{
       //display.drawString(110, 0, "N/C");
       no_signal();

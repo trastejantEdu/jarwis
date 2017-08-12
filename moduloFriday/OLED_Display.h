@@ -928,8 +928,11 @@ void pantalla_info(int id, String ssid, String IP){
 void pantalla_datos(String hora, int temperatura, int humedad){
   
     //cast de los datos obtenidos para motrarlos por pantalla
-    String humedadNow = String(humedad); 
-    String temperaturaNow = String(temperatura); 
+    String humedadNow;
+    String temperaturaNow;
+    
+    if(isnan(humedad)) {humedadNow = String(humedad);}else{humedadNow = "¿?";} 
+    if(isnan(temperatura)) { temperaturaNow = String(temperatura);}else{temperaturaNow="¿?";} 
     
     display.clear();
     display.setTextAlignment(TEXT_ALIGN_CENTER);

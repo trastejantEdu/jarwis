@@ -14,4 +14,7 @@ int frecuencia = 10000;
 //Horario de verano España
 int UTC = 2;
 
+//Configuración del display
+bool flipDisplay = true;//Posicion del display. Normal -> FALSE. Invertida->True
+
 #endif // CONFIGURATION_H

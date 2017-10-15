@@ -6,15 +6,15 @@ SSD1306  display(0x3c, D1, D2);
 #define ico_width 20
 #define ico_height 20
 
-<<<<<<< HEAD
+//<<<<<<< HEAD
 #define WiFi_Logo_width 60
 #define WiFi_Logo_height 36
 
 //Modificar por simbolo propio
-=======
+//=======
 int sennal = 90;
 
->>>>>>> 5dcf7ec05e50638a6f3631559650e32aa9024294
+//>>>>>>> 5dcf7ec05e50638a6f3631559650e32aa9024294
 const char WiFi_Status_OK[] PROGMEM = {
 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 
 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 
@@ -919,12 +919,11 @@ void low_battery(){
     
 }
 
-<<<<<<< HEAD
 void wifiLogo(){
   display.drawXbm(34, 20, WiFi_Logo_width, WiFi_Logo_height, WiFi_Logo_bits);
   display.display();
     
-=======
+}
 void high_signal(){
   //fillRect(int16_t x, int16_t y, int16_t width, int16_t height);
   display.fillRect(110, 0, 5, 5);
@@ -944,7 +943,7 @@ void low_signal(){
 
 void no_signal(){
   display.drawCircle(110, 0, 5);
->>>>>>> 5dcf7ec05e50638a6f3631559650e32aa9024294
+
 }
 
 void pantalla_info(int id, String ssid, String IP){

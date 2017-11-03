@@ -1,7 +1,7 @@
 bool conexionWiFi(const char* ssid,const char* password){
   int progress;
   WiFi.begin(ssid,password);
-    
+  //Cambiar por un bucle NO bloequante  
   while ( WiFi.status() != WL_CONNECTED ) {
     progress= progress + 20;
     delay ( 500 );

@@ -2,8 +2,8 @@
 #define CONFIGURATION_H
 
 //Datos de la red Wifi
-const char *ssid = "YourSSID";
-const char *password = "YourWiFiPassword";
+//const char *ssid = "YourSSID";
+//const char *password = "YourWiFiPassword";
 
 //URL del servidor Jarvis
 String url = "http://192.168.1.33/FRIDAY/registrador.php?id=";

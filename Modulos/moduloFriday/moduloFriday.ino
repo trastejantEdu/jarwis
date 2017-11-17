@@ -15,6 +15,7 @@
 #include "web.h"
 #include "conexion.h"
 #include "saveData.h"
+#include "menus.h"
 
 #define USE_SERIAL Serial
 
@@ -55,10 +56,15 @@ void setup() {
     USE_SERIAL.println();
     USE_SERIAL.println();
     
- conexionWiFi(ssid,password);
- Serial.println("Chip ID: "+ id); 
+ conexionWiFi();
+ //Serial.println("Chip ID: "+ id); 
  ntp.begin();
  confHora();
+ Serial.println("HORA SINCRONIZADA");
+ sensorBegin();
+ Serial.println("SENSOR INICIALIZADO");
+
+ initMenus();
  
  if ( MDNS.begin ( "esp8266" ) ) {
   Serial.println ( "MDNS responder started" );
@@ -69,7 +75,7 @@ void setup() {
   server.on("/control", control);
   server.on("/lecturas", lecturas);
   server.on("/about", about);
-
+  
 
  //Inicializacion del servidor web
  server.begin();
@@ -84,18 +90,28 @@ void setup() {
 }//Fin de la función Setup
 
 void loop() {
+  unsigned long currentMillis = millis();
+
+  if (currentMillis - previousMillis >= frecuencia) {
   //Lectura de sensores   
   Serial.print("H:");
   Serial.println(readHumedadStr());
   Serial.print("T:");
   Serial.println(readTemperaturaStr());
+ 
+ //Menus
+ if(estado==1){
+  mostrarMenu();
+ }else{
+   pantalla_datos(return_hora(), readTemperatura(), readHumedad());
+ }
   
-  pantalla_datos(return_hora(), readTemperatura(), readHumedad());
+ 
     
     //Si tenemos conexión a internet enviamos los datos al servidor
-    saveData(id);
+  saveData(id);
 
-    delay(frecuencia);
+  }
     
     server.handleClient();
 }

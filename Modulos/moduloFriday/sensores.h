@@ -5,7 +5,19 @@
 
   DHT sensor(SENSORPIN, DHTTYPE);
 
-
+  bool sensorBegin(){
+    sensor.begin();
+    float h = sensor.readHumidity();
+    float t = sensor.readTemperature();
+ 
+    if (isnan(h) || isnan(t)) {
+     Serial.println("Failed to read from DHT sensor!");
+      return false;
+    }else{
+      Serial.println("DHT sensor OK!");
+      return true;
+    }
+  }
 
   String readHumedadStr(){
   int humedad = sensor.readHumidity();

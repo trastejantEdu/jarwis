@@ -32,7 +32,7 @@ unsigned long previousMillis = 0;
 char ssid[50];      
 char pass[50];
 
-const char *ssidConf = "tutorial";
+const char *ssidConf = "Jarvis";
 const char *passConf = "12345678";
 
 String mensaje = "";
@@ -41,7 +41,7 @@ String mensaje = "";
 String pagina = "<!DOCTYPE html>"
 "<html>"
 "<head>"
-"<title>Tutorial Eeprom</title>"
+"<title>Configuracion Modulo Jarvis</title>"
 "<meta charset='UTF-8'>"
 "</head>"
 "<body>"
@@ -142,19 +142,23 @@ void modoconf() {
 
 
 //------------------------SETUP WIFI-----------------------------
-void setup_wifi() {
+void setup_wifi(char* ssid, char* pass) {
   int progress;
 // Conexión WIFI
   WiFi.mode(WIFI_STA); //para que no inicie el SoftAP en el modo normal
   WiFi.begin(ssid, pass);
-  
-  for(int i=0; i<20;i++){    
+  int tOut = 0;
+    
+  //while (WiFi.status() != WL_CONNECTED || tOut<20) {
+  for(int tOut = 0; tOut<20; tOut++){
     progress= progress + 5;
     delay ( 200 );
     Serial.print ( "." );
     if(progress>=100) progress=0;
     display.drawProgressBar(0, 0, 120, 10, progress);
     display.display();
+    //tOut++;
+    delay(1000);
   }
   
 if(WiFi.status() == WL_CONNECTED){
@@ -216,7 +220,7 @@ bool conexionWiFi(){
   Serial.println(ssid);
   Serial.println(pass);
 
-  setup_wifi();
+  setup_wifi(ssid,pass);
   delay(500);
   return true;
   //if(WiFi.status() == WL_CONNECTED){return true;}else{return false;}

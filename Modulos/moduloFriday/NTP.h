@@ -12,6 +12,11 @@ class NTP {
       unsigned long get_secons();
       String get_timeNow();
       String get_timeNow(int UTC);
+      int onTime();
+      int get_year();
+      int get_month();
+      int get_day();
+      int ajusteHorario( int dia, int mes, int anyo, int hora, int minuto, int segundo);
   
   private:
       const char* ntpServerName = "time.nist.gov";
@@ -25,6 +30,11 @@ class NTP {
       unsigned long epoch = secsSince1900 - seventyYears;
       unsigned int localPort = 2390;// local port to listen for UDP packets
       unsigned long sendNTPpacket(IPAddress& address);
+      time_t toTime( int dia, int mes, int anyo, int hora, int minuto, int segundo);
+      unsigned int ajusteHorario();
+      tmElements_t Fecha;
+      int ajuste;     
+      time_t cambio_1, cambio_2, fecha_hoy;
   };
 
 #endif

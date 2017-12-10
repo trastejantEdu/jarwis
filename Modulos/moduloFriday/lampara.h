@@ -20,10 +20,14 @@ String intensidad;
 int Ii;
 
 void rgb_begin(){
-  Serial.println("INICIALIZADA LIBRERIA NEOPIXEL");
-  pixels.begin();
+   Serial.println("INICIALIZADA LIBRERIA NEOPIXEL");
+   pixels.begin();
    pixels.setPixelColor(1, (0, 255, 255)); //full-bright cyan
    pixels.show();
+   delay(250);
+   pixels.setPixelColor(1, (0, 0, 0)); //full-bright cyan
+   pixels.show();
+   
 }
 
 

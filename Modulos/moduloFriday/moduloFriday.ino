@@ -23,30 +23,19 @@
 
 NTP ntp;
 
-
 const int id = ESP.getChipId();
 
-
-//inicializacion con valores no validos
-int hora = 25;
-int minuto= 62;
-int segundo = 62;
-
-void confHora(){
-  while ( hora > 24 ){hora = ntp.get_hour();}
-  while ( minuto > 60 ){minuto = ntp.get_minutes();}
-  while ( segundo > 60 ){segundo = ntp.get_secons();}
-  hora = hora + UTC;//Implementar deteccion de horairo de verano/invierno
-  setTime(hora,minuto,segundo,16,04,2017);//¡Implentar la getFecha en la libreria NTP!  
-}
+unsigned long currentMillis;
 
 String return_hora(){
   time_t t = now();  
-  return String(hour(t))+":"+String(minute(t));
+  int hora = hour(t)+ntp.ajusteHorario(day(t),month(t),year(t), hour(t), minute(t),second(t));
+  return String(hora)+":"+String(minute(t));
 }
 
-void setup() {
 
+void setup() {
+    
     inicializarDisplay(flipDisplay);
     wifiLogo();
     
@@ -58,9 +47,35 @@ void setup() {
     
  conexionWiFi();
  //Serial.println("Chip ID: "+ id); 
+ 
+
+ //Poner el reloj en hora
+ display.drawString(60, 70, "Obteniendo hora...");
+ display.display();
  ntp.begin();
- confHora();
+ int progress = 0;
+ 
+ while (ntp.onTime() == -1) {
+    delay (500);
+    Serial.print ( "#" );
+    display.drawProgressBar(0, 100, 120, 10, progress);
+    progress++;
+    display.display();
+  }
+
+  int hora = ntp.get_hour();
+  int minuto = ntp.get_minutes();
+  int segundo = ntp.get_secons();
+  setTime(hora,minuto,segundo,ntp.get_day(),ntp.get_month(),ntp.get_year());
+  
+  
+ //confHora();
  Serial.println("HORA SINCRONIZADA");
+ Serial.print("Hora del NTP: ");
+ Serial.println(String(hora)+":"+String(minuto)+":"+String(segundo));
+ Serial.print("Hora corregida: ");
+ Serial.println(return_hora());
+
  sensorBegin();
  Serial.println("SENSOR INICIALIZADO");
 
@@ -79,9 +94,13 @@ void setup() {
 
  //Inicializacion del servidor web
  server.begin();
- rgb_begin();
+ 
  
  Serial.println ( "HTTP server started" );
+
+ //Iniciamos la lampara
+ rgb_begin();
+ Serial.println("Librerias RGB started");
  display.clear();
  
  String ssid_str = String(ssid);
@@ -90,14 +109,21 @@ void setup() {
 }//Fin de la función Setup
 
 void loop() {
-  unsigned long currentMillis = millis();
 
-  if (currentMillis - previousMillis >= frecuencia) {
+  currentMillis = currentMillis + millis();
+  
+  if (currentMillis >= frecuencia) {
   //Lectura de sensores   
   Serial.print("H:");
   Serial.println(readHumedadStr());
   Serial.print("T:");
   Serial.println(readTemperaturaStr());
+
+    if(WiFi.status()){
+        //Si tenemos conexión a internet enviamos los datos al servidor
+    saveData(id);   
+    }
+  }
  
  //Menus
  if(estado==1){
@@ -106,13 +132,6 @@ void loop() {
    pantalla_datos(return_hora(), readTemperatura(), readHumedad());
  }
   
- 
-    
-    //Si tenemos conexión a internet enviamos los datos al servidor
-  saveData(id);
-
-  }
-    
-    server.handleClient();
+  server.handleClient();
 }
 

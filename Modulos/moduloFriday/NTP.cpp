@@ -1,7 +1,7 @@
 #include <ESP8266WiFi.h>
 #include <WiFiUdp.h>
+#include <Time.h>//EVITAR LLAMAR A TIME AQUI
 #include "NTP.h"
-
 
 IPAddress timeServer(129, 6, 15, 28); // time.nist.gov NTP server
 
@@ -79,68 +79,27 @@ unsigned long NTP::get_unix_time() {
     
     unsigned long secsSince1900 = highWord << 16 | lowWord;
 
-    //El tiempo Unix compienza el 1/1/1970. Esos 70 años en segundos son 2208988800:
-    const unsigned long seventyYears = 2208988800UL;
-
-    //Obtenemos la era Unix
-    unsigned long epoch = secsSince1900 - seventyYears;
-    return epoch;
+    return secsSince1900;
   }
 }
 
 /**
 *Devuelve la hora actual
 */
-unsigned long NTP::get_hour() {
-  WiFi.hostByName(ntpServerName, timeServerIP);
-  
-  sendNTPpacket(timeServerIP);   
-  delay(1000);
-
-  int cb = udp.parsePacket();
-  if (!cb) {
-    return -1;
-  }
-  else {
-
-    
-    udp.read(packetBuffer, NTP_PACKET_SIZE); 
-    
-    unsigned long highWord = word(packetBuffer[40], packetBuffer[41]);
-    unsigned long lowWord = word(packetBuffer[42], packetBuffer[43]);   
-    unsigned long secsSince1900 = highWord << 16 | lowWord;
-    
-    const unsigned long seventyYears = 2208988800UL;    
-    unsigned long epoch = secsSince1900 - seventyYears;
-    
+unsigned long NTP::get_hour() { 
     //Obtenemos y devolvemos la hora
-    return ((epoch % 86400L) / 3600);
+    return ((onTime() % 86400L) / 3600);
   }
-}
+
+
 
 
 /**
  * Devuelve el minuto actual
  */
 unsigned long NTP::get_minutes() {
-  sendNTPpacket(timeServerIP); 
-  delay(1000);
-
-  int cb = udp.parsePacket();
-  if (!cb) {
-    return -1;
-  }else {    
-    udp.read(packetBuffer, NTP_PACKET_SIZE); 
-    unsigned long highWord = word(packetBuffer[40], packetBuffer[41]);
-    unsigned long lowWord = word(packetBuffer[42], packetBuffer[43]);   
-    unsigned long secsSince1900 = highWord << 16 | lowWord;
-    
-    const unsigned long seventyYears = 2208988800UL;    
-    unsigned long epoch = secsSince1900 - seventyYears;
-    
     //obtenemos y devolvemos los minutos
-    return ((epoch  % 3600) / 60);
-  }
+    return ((onTime()  % 3600) / 60);
 }
 
 /**
@@ -148,34 +107,8 @@ unsigned long NTP::get_minutes() {
 */
 
 unsigned long NTP::get_secons() {
-  WiFi.hostByName(ntpServerName, timeServerIP);
-  
-  sendNTPpacket(timeServerIP);   
-  delay(1000);
-
-  int cb = udp.parsePacket();
-  if (!cb) {
-    return -1;
-  }else {
-
-    
-    udp.read(packetBuffer, NTP_PACKET_SIZE); 
-
-  
-
-    unsigned long highWord = word(packetBuffer[40], packetBuffer[41]);
-    unsigned long lowWord = word(packetBuffer[42], packetBuffer[43]);
-
-    unsigned long secsSince1900 = highWord << 16 | lowWord;
-
-    const unsigned long seventyYears = 2208988800UL;
-   
-    unsigned long epoch = secsSince1900 - seventyYears;
-    
     //Obtenemos y devolvemos los segundos
-    return (epoch % 60); // print the second
-
-  }
+    return (onTime() % 60); // print the second 
 }
 
 /**
@@ -274,4 +207,117 @@ String NTP::get_timeNow(int UTC) {
   return timeNow;
 }
 
+time_t NTP::toTime( int dia, int mes, int anyo, int hora, int minuto, int segundo){   
+       tmElements_t Fecha ;   // Estructura para time
+       Fecha.Second = segundo;
+       Fecha.Minute = minuto ;
+       Fecha.Hour = hora ;
+       Fecha.Day =  dia ;
+       Fecha.Month = mes ;
+       Fecha.Year = anyo -1970 ;
 
+       return makeTime(Fecha) ;
+   }
+
+int NTP::get_year() {
+  // TIENE QUE CALCULAR EL ANYO POR SI MISMA!!
+  
+  WiFi.hostByName(ntpServerName, timeServerIP);
+  String timeNow;
+  sendNTPpacket(timeServerIP);   
+  delay(1000);
+
+  int cb = udp.parsePacket();
+  if (!cb) {
+    return -1;
+  }
+  else {
+
+    
+    udp.read(packetBuffer, NTP_PACKET_SIZE);
+
+    
+
+    unsigned long highWord = word(packetBuffer[40], packetBuffer[41]);
+    unsigned long lowWord = word(packetBuffer[42], packetBuffer[43]);
+    
+    unsigned long secsSince1900 = highWord << 16 | lowWord;
+
+   
+    const unsigned long seventyYears = 2208988800UL;
+    unsigned long epoch = secsSince1900 - seventyYears;
+    return epoch;
+    //return year();    
+  }
+}
+
+ int NTP::get_month() {
+  //MEJORAR
+    return month();
+  }
+
+
+ int NTP::get_day() {
+  // MEJORAR
+    return day();
+  }
+
+
+ int NTP::onTime(){
+
+  //OPTIMIZAR.
+  WiFi.hostByName(ntpServerName, timeServerIP);
+  String timeNow;
+  sendNTPpacket(timeServerIP);   
+  delay(1000);
+
+  int cb = udp.parsePacket();
+  if (!cb) {
+    return -1;
+  }else {
+
+    
+    udp.read(packetBuffer, NTP_PACKET_SIZE);
+
+    
+
+    unsigned long highWord = word(packetBuffer[40], packetBuffer[41]);
+    unsigned long lowWord = word(packetBuffer[42], packetBuffer[43]);
+    
+    unsigned long secsSince1900 = highWord << 16 | lowWord;
+
+   
+    const unsigned long seventyYears = 2208988800UL;
+    unsigned long epoch = secsSince1900 - seventyYears;
+    setTime(epoch);//Devolver el tiempo y calcularlo con funciones dia/mes/anyo
+    return epoch; 
+  }
+ }
+
+ int NTP::ajusteHorario( int dia, int mes, int anyo, int hora, int minuto, int segundo){   
+  int ajuste;     
+  time_t cambio_1, cambio_2, fecha_hoy;
+
+  for (int i = 31 ; i >0 ; i--){
+    cambio_1 = toTime(i, 3, 2015, 2, 0, 0) ; // A las 2 am seran las 3
+        if ( weekday( cambio_1) == 1 )    // Domingo = 1
+        break ;
+   }
+
+   for (int i = 31 ; i >0 ; i--){
+    cambio_2 = toTime(i, 10, 2015, 3, 0, 0) ; // A las 3 am seran las 2
+      if ( weekday( cambio_2) == 1 )    // Domingo = 1
+      break;    
+   }
+
+   fecha_hoy = toTime(dia, mes, anyo, hora, minuto, segundo);
+   if ( fecha_hoy > cambio_1 && fecha_hoy < cambio_2){
+     ajuste = 2;
+   }else{
+     ajuste = 1; 
+   }
+
+   return ajuste;
+ }
+
+   

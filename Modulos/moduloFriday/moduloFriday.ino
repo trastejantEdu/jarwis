@@ -19,7 +19,9 @@
 
 #define USE_SERIAL Serial
 
-
+int SyncError= 0;
+int epoch=-1;
+long previousTime = 0;
 
 NTP ntp;
 
@@ -54,8 +56,11 @@ void setup() {
  display.display();
  ntp.begin();
  int progress = 0;
+
  
- while (ntp.onTime() == -1) {
+ //while (ntp.onTime() == -1) {
+ while (epoch == -1) {
+    epoch = ntp.onTime();
     delay (500);
     Serial.print ( "#" );
     display.drawProgressBar(0, 100, 120, 10, progress);
@@ -63,10 +68,12 @@ void setup() {
     display.display();
   }
 
-  int hora = ntp.get_hour();
-  int minuto = ntp.get_minutes();
-  int segundo = ntp.get_secons();
-  setTime(hora,minuto,segundo,ntp.get_day(),ntp.get_month(),ntp.get_year());
+    int hora = ntp.get_hour(epoch);
+    int minuto = ntp.get_minutes(epoch);
+    int segundo = ntp.get_secons(epoch);
+    setTime(hora,minuto,segundo,ntp.get_day(),ntp.get_month(),ntp.get_year());
+  
+  
   
   
  //confHora();
@@ -110,18 +117,23 @@ void setup() {
 
 void loop() {
 
-  currentMillis = currentMillis + millis();
+  currentMillis = currentMillis + millis();  
   
   if (currentMillis >= frecuencia) {
+  
   //Lectura de sensores   
   Serial.print("H:");
   Serial.println(readHumedadStr());
   Serial.print("T:");
   Serial.println(readTemperaturaStr());
 
-    if(WiFi.status()){
+    if(WiFi.status()&&jarvisSync){
         //Si tenemos conexión a internet enviamos los datos al servidor
-    saveData(id);   
+      if(!saveData(id)){
+        //incre el contador de errores
+         SyncError++;
+         if(SyncError>MAX_SYNC_ERROR){restart();}//Si suceden 3 sincronizadores fallidas reinicia
+      }
     }
   }
  

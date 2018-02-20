@@ -10,6 +10,9 @@ class NTP {
       unsigned long get_hour();
       unsigned long get_minutes();
       unsigned long get_secons();
+      unsigned long get_hour(int epoch);
+      unsigned long get_minutes(int epoch);
+      unsigned long get_secons(int epoch);
       String get_timeNow();
       String get_timeNow(int UTC);
       int onTime();

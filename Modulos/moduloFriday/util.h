@@ -18,3 +18,14 @@ unsigned int hexToDec(String hexString) {
   
   return decValue;
 }
+
+/*
+ * Reinicia via software y guarda un contador de los reinicios que ha realizado
+ */
+void restart(){
+  //Leer el nu de reset de la EEPRO
+  int n_reset=0;
+  n_reset++;
+  //GUARDARLOS ANTES DE REINICIAR
+}
+

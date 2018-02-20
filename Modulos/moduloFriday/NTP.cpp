@@ -112,6 +112,34 @@ unsigned long NTP::get_secons() {
 }
 
 /**
+*Devuelve la hora actual
+*/
+unsigned long NTP::get_hour(int epoch) { 
+    //Obtenemos y devolvemos la hora
+    return ((epoch % 86400L) / 3600);
+  }
+
+
+
+
+/**
+ * Devuelve el minuto actual
+ */
+unsigned long NTP::get_minutes(int epoch) {
+    //obtenemos y devolvemos los minutos
+    return ((epoch  % 3600) / 60);
+}
+
+/**
+*Devuelve el segundo actual
+*/
+
+unsigned long NTP::get_secons(int epoch) {
+    //Obtenemos y devolvemos los segundos
+    return (epoch % 60); // print the second 
+}
+
+/**
 *Devuelve la hora como un String en formato HH:MM:SS
 */
 String NTP::get_timeNow() {

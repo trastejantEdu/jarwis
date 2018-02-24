@@ -1,4 +1,4 @@
-<p align="center">![Alt text](https://github.com/trastejant/F.R.I.D.A.Y./blob/master/Fotos/jarvisLogo.svg.png)</p>
+<p align="center"><img src="https://github.com/trastejant/F.R.I.D.A.Y./blob/master/Fotos/jarvisLogo.svg.png"></p>
 
 ![Alt text](https://github.com/trastejant/F.R.I.D.A.Y./blob/master/Fotos/IMG_20170122_131647.jpg)
 

@@ -141,7 +141,7 @@ void loop() {
  if(estado==1){
   mostrarMenu();
  }else{
-   pantalla_datos(return_hora(), readTemperatura(), readHumedad());
+   pantalla_datos(return_hora(), readTemperatura(), readHumedad()); 
  }
   
   server.handleClient();

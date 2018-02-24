@@ -27,8 +27,8 @@ float temperature;
 
 
 
-const char* ssid = "yourSSID";
-const char* password = "YOURWiFiPassword";
+const char* ssid = "vodafoneFE08";
+const char* password = "BKGABQEQFC35PQ";
 
 // Muestra las características del sensor
 void displaySensorDetails(void){
@@ -182,8 +182,14 @@ void loop() {
       }else{
          Serial.println("Fallo al subir los datos");
       }
+
       
+      //Para que el modo de sueño profundo es necesario conectar D0 a RST de lo contrario el micro no volverá a despertar.
+      if(lowPowerMode){
+        Serial.println("Ahora me iré a dormir 30 min");
+        ESP.deepSleep(T_DeepSleep, WAKE_RF_DEFAULT);
+      }//Manda el micro a dormir
     }  
 
-    server.handleClient();
+    if(!lowPowerMode){server.handleClient();}
 } 

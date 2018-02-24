@@ -9,8 +9,8 @@
 String url = "http://192.168.0.33/FRIDAY/registrador.php?id=";
 
 //Frecuencia de refresco de las mediciones
-unsigned long frecuencia = 1800000;//30min
-
+unsigned long frecuencia = 1000;//1 seg
+uint32_t T_DeepSleep = 1800e6; //30Min
 
 //Horario de verano España
 int UTC = 2;
@@ -24,7 +24,10 @@ bool slice = true;
 //Habilita la subida de datos al servidor jarvis
 bool jarvisSync=true;
 
-//
+//Habilita el modo de bajo consumo
+bool lowPowerMode = true;
+
+//Numero máximo de errores de sincronización permitidos antes de reiniciar el modulo
 #define MAX_SYNC_ERROR 3
 
 

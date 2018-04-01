@@ -4,8 +4,8 @@
 #define rele 13//D7
 #define btn 14//D5
 
-const char* ssid = "vodafone2588";
-const char* password = "UBBBB2P29HVGKU";
+const char* ssid = "YOURSSID";
+const char* password = "YOURPASSWORD";
 
 const char* www_username = "jarvis";
 const char* www_password = "1234";

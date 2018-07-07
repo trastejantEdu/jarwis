@@ -23,9 +23,13 @@ unsigned int hexToDec(String hexString) {
  * Reinicia via software y guarda un contador de los reinicios que ha realizado
  */
 void restart(){
-  //Leer el nu de reset de la EEPRO
+  //¡¡¡Leer el nu de reset de la EEPRO!!!
   int n_reset=0;
   n_reset++;
-  //GUARDARLOS ANTES DE REINICIAR
+  //¡¡¡GUARDARLOS ANTES DE REINICIAR!!!
+
+  //Usamos el pin de reset del modo bajo consumo para reiniciar el módulo. 
+  pinMode(D0,OUTPUT);
+  digitalWrite(D0, HIGH);
 }
 

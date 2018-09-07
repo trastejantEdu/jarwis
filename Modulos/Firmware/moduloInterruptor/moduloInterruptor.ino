@@ -1,18 +1,32 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
+#include "OTA.h"
 
-#define rele 13//D7
-#define btn 14//D5
 
-const char* ssid = "YOURSSID";
-const char* password = "YOURPASSWORD";
+//IPAddress server(192, 168, 0, 56); // IP de la raspberry Pi
+//#define rele 13//D7
+//#define btn 14//D5
+
+/**
+ * VALORES PARA SONOFF
+ 
+ Valores para Sonoff
+ */
+ #define rele 12
+ #define led 13
+ #define btn 0
+ #define status_led 14
+ 
+
+const char* ssid = "MiFibra-6FD8";
+const char* password = "anjx3Z3c";
 
 const char* www_username = "jarvis";
 const char* www_password = "1234";
 
 int estado = 0;
 IPAddress moduleIP;
-
+String ip="0.0.0.0";
 ESP8266WebServer server(80);
 
 void pagConf(){
@@ -27,7 +41,7 @@ void miWeb(void) {
   }else{
     web = web + "<button type='button' class='btn btn-success active'>Encendido</button>";
   }
-  web = web +"</form></div><footer>"+moduleIP+"</footer></body></html>";
+  web = web +"</form></div><footer>Dirección IP del módulo: "+ip+"</footer></body></html>";
 
   server.send(200, "html",web);  
   
@@ -65,13 +79,19 @@ void showMenu(){
 
 void setup(void){
   Serial.begin(115200);
+  pinMode(led,OUTPUT);
   WiFi.begin(ssid, password);
   Serial.println("");
-
+  
+  WiFi.mode(WIFI_STA);
   // Wait for connection
+  int t = 0; 
+  
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
+    analogWrite(led,t);
+    t=t+50;
   }
   Serial.println("");
   Serial.print("Connected to ");
@@ -87,6 +107,8 @@ void setup(void){
 
   pinMode(btn, INPUT_PULLUP);
   attachInterrupt(btn,showMenu,FALLING);
+
+  pinMode(led,OUTPUT);
 
   server.on("/", miWeb);
   server.on("/conf", pagConf);
@@ -107,8 +129,12 @@ void setup(void){
   
   server.begin();
   Serial.println("HTTP server started");
+  ip = String(moduleIP[0])+"."+String(moduleIP[1])+"."+String(moduleIP[2])+"."+String(moduleIP[3]);
+  //initOTA();
+  digitalWrite(led,HIGH);
 }
 
 void loop(){
-  server.handleClient();
+  server.handleClient(); 
+  //ArduinoOTA.handle(); 
 }

@@ -1,0 +1,8 @@
+(sym_lib_table
+  (lib (name ESP8266)(type Legacy)(uri ${KICAD_SYMBOL_DIR}/kicad-ESP8266/ESP8266.lib)(options "")(descr ""))
+  (lib (name dht12)(type Legacy)(uri ${KIPRJMOD}/dht12.lib)(options "")(descr ""))
+  (lib (name ws2812)(type Legacy)(uri ${KICAD_SYMBOL_DIR}/ws2812/libraries/ws2812.lib)(options "")(descr ""))
+  (lib (name sonda_humedad)(type Legacy)(uri ${KIPRJMOD}/sonda_humedad.lib)(options "")(descr ""))
+  (lib (name fs1000a)(type Legacy)(uri ${KIPRJMOD}/fs1000a.lib)(options "")(descr ""))
+  (lib (name Garden_Guardian-rescue)(type Legacy)(uri ${KIPRJMOD}/Garden_Guardian-rescue.lib)(options "")(descr ""))
+)

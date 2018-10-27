@@ -1,0 +1,6 @@
+(fp_lib_table
+  (lib (name DHT12_tumbado)(type KiCad)(uri "$(KIPRJMOD)/DHT12_tumbado.pretty")(options "")(descr ""))
+  (lib (name FS1000A)(type KiCad)(uri "$(KIPRJMOD)/FS1000A.pretty")(options "")(descr ""))
+  (lib (name sondas)(type KiCad)(uri "$(KIPRJMOD)/sondas.pretty")(options "")(descr ""))
+  (lib (name Garden_Guardian_Little)(type KiCad)(uri /media/david/Nano/Nano/Garden_Guardian_Little)(options "")(descr ""))
+)

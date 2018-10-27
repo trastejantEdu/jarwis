@@ -1,0 +1,18 @@
+EESchema-LIBRARY Version 2.3
+#encoding utf-8
+#
+# sonda_humedad
+#
+DEF sonda_humedad U 0 40 Y Y 1 F N
+F0 "U" -50 250 60 V V C CNN
+F1 "sonda_humedad" 400 150 60 V V C CNN
+F2 "" 0 0 60 H I C CNN
+F3 "" 0 0 60 H I C CNN
+DRAW
+S 0 300 350 0 1 1 0 N
+X Terminal_1 1 100 -300 300 U 50 50 1 1 B
+X Terminal_2 2 250 -300 300 U 50 50 1 1 B
+ENDDRAW
+ENDDEF
+#
+#End Library

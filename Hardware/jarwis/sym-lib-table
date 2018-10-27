@@ -1,0 +1,8 @@
+(sym_lib_table
+  (lib (name HIH6020)(type Legacy)(uri ${KICAD_SYMBOL_DIR}/HIH6020.lib)(options " pwr_sym_only")(descr ""))
+  (lib (name SHT30-DIS-B)(type Legacy)(uri ${KIPRJMOD}/SHT30/SHT30-DIS-B.lib)(options "")(descr ""))
+  (lib (name BH1750FVI-TR)(type Legacy)(uri ${KIPRJMOD}/BH1750/BH1750FVI-TR.lib)(options "")(descr ""))
+  (lib (name oled_display)(type Legacy)(uri /home/nano/Desarrollos/git/jarwis/Modulos/Hardware/jarwis/oled_display.lib)(options "")(descr ""))
+  (lib (name dht12)(type Legacy)(uri /home/nano/Desarrollos/git/jarwis/Modulos/Hardware/Garden_Guardian_Little/dht12.lib)(options "")(descr ""))
+  (lib (name jarvis_shield-rescue)(type Legacy)(uri ${KIPRJMOD}/jarvis_shield-rescue.lib)(options "")(descr ""))
+)

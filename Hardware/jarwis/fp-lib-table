@@ -1,0 +1,10 @@
+(fp_lib_table
+  (lib (name D1_mini)(type KiCad)(uri "$(KIPRJMOD)/lib/D1_mini.pretty")(options "")(descr ""))
+  (lib (name oled_display_)(type KiCad)(uri "$(KIPRJMOD)/oled_display_.pretty")(options "")(descr ""))
+  (lib (name SHT30-DIS-B)(type Legacy)(uri "$(KIPRJMOD)/SHT30/SHT30-DIS-B.mod")(options "")(descr ""))
+  (lib (name BH1750FVI-TR)(type Legacy)(uri "$(KIPRJMOD)/BH1750/BH1750FVI-TR.mod")(options "")(descr ""))
+  (lib (name Package_TO_SOT_SMD)(type KiCad)(uri /usr/share/kicad/modules/TO_SOT_Packages_SMD.pretty)(options "")(descr ""))
+  (lib (name ESP8266)(type KiCad)(uri ${KIPRJMOD}/ESP8266)(options "")(descr ""))
+  (lib (name DHT12_tumbado)(type KiCad)(uri /home/nano/Desarrollos/git/jarwis/Modulos/Hardware/Garden_Guardian_Little/DHT12_tumbado.pretty)(options "")(descr ""))
+  (lib (name logo_jarwis)(type KiCad)(uri ${KIPRJMOD}/logo_jarwis.pretty)(options "")(descr ""))
+)

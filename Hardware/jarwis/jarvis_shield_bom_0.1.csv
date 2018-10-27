@@ -1,0 +1,50 @@
+Component,Description,Part,References,Value,Footprint,Quantity Per PCB,Datasheet,Mouser REF,Fabr REF,Mouser_REF,Field8,Field4,Field7,Field6,Field5
+1,Unpolarized capacitor,C,C1 C2 C9,0.1uF,C_0805_HandSoldering,3,,,,,,,,,
+2,Unpolarized capacitor,C,C3 C4 C5 C6,104,C_0805_HandSoldering,4,,,,,,,,,
+3,Unpolarized capacitor,C,C10 C11,1pF,C_0805_HandSoldering,2,,,,,,,,,
+4,Unpolarized capacitor,C,C7 C8,C,C_0805_HandSoldering,2,,,,,,,,,
+5,,DIODE,D7,1N4148,D_0805,1,,,,,,,,,
+6,LED generic,LED,D1 D2,LED,LED_0805_HandSoldering,2,,,,,,,,,
+7,"WS2812B (""Neopixel"") digital RGB LED, 5mm/8mm LED package",Neopixel_THT,D3 D4 D5 D6,Neopixel_THT,LED_WS2812B-PLCC4,4,https://www.adafruit.com/product/1938,,,,,,,,
+8,,CONN_01X06,J2,FTDI,Pin_Header_Angled_1x06_Pitch2.54mm,1,,,,,,,,,
+9,,CONN_01X02,J4,POWER,Pin_Header_Straight_1x02_Pitch2.54mm,1,,,,,,,,,
+10,,Screw_Terminal_1x02,J1,Screw_Terminal_1x02,TerminalBlock_bornier-2_P5.08mm,1,,,,,,,,,
+11,USB Type A connector,USB_A,J3,USB_A,USB_A,1,,,,,,,,,
+12,USB Micro Type B connector,USB_B_Micro,J5,USB_B_Micro,USB_Micro-B,1,,,,,,,,,
+13,"Dual Jumper, normally closed",Jumper_NC_Dual,J6,Wake-up/Upgrade,Pin_Header_Straight_1x03_Pitch2.54mm,1,,,,,,,,,
+14,"Jumper, normally open",Jumper_NO_Small,JP1,Jumper_NO_Small,Pin_Header_Straight_1x02_Pitch2.54mm,1,,,,,,,,,
+15,speaker ,Speaker,LS1,Speaker,Buzzer_15x7.5RM7.6,1,,,,,,,,,
+16,"45V Vce, 0.8A Ic, NPN, SOT-23",BC850W,Q2,BC850W,SOT-323_SC-70,1,https://www.mouser.es/datasheet/2/115/ds30039-892558.pdf,621-MMBT4401-13-F,MMBT4401-13-F,,,,,,
+17,,MMBF170-RESCUE-jarvis_shield,Q1,MMBF170,SOT-23,1,,,,,,,,,
+18,Resistor,R,R19,100R,R_0805_HandSoldering,1,,,,,,,,,
+19,Resistor,R,R2 R3 R4 R6 R10 R17,10K,R_0805_HandSoldering,6,https://www.mouser.es/datasheet/2/392/n_catalog_partition23_en-1116117.pdf,754-RS2012P-103-DT53,,,,,,,
+20,Resistor,R,R11 R12 R13 R14,150,R_0805_HandSoldering,4,,,,,,,,,
+21,Resistor,R,R5,180R,R_0805_HandSoldering,1,,,,,,,,,
+22,Resistor,R,R9 R15 R20 R21 R23,1K,R_0805_HandSoldering,5,,,,,,,,,
+23,Resistor,R,R7 R18,220,R_0805_HandSoldering,2,,,,,,,,,
+24,Resistor,R,R16,2K,R_0805_HandSoldering,1,,,,,,,,,
+25,Resistor,R,R22,2K2,R_0805_HandSoldering,1,,,,,,,,,
+26,Resistor,R,R8,4.7K,R_0805_HandSoldering,1,,,,,,,,,
+27,Resistor,R,R1,R,R_0805_HandSoldering,1,,,,,,,,,
+28,"Push button switch, generic, two pins",SW_Push,SW1 SW2 SW3,SW_Push,SW_PUSH_6mm,3,,,,,,,,,
+29,"Push button switch, generic, two pins",SW_Push,SW4,SW_Push,SW_SPST_SKQG,1,,,,,,,,,
+30,,BH1750,U1,BH1750,SOTFL50P300X75-6N,1,https://www.mouser.com/catalog/specsheets/Rohm_11162017_ROHMS34826-1.pdf,,,,,,,,
+31,,ESP-12E,U4,ESP-12E,ESP-12E,1,,,,,,,,,
+32,"800mA Low-Dropout Linear Regulator, 1.8V fixed output, TO-220/TO-252/TO-263/SOT-223",LM1117-3.3,U5,LM1117-3.3,SOT-223-3_TabPin2,1,http://www.ti.com/lit/ds/symlink/lm1117.pdf,,,,,,,,
+33,,SHT30-DIS-B,U2,SHT30-DIS-B,DFN250X250X100-9N,1,http://www.mouser.com/ds/2/682/Sensirion_Humidity_Sensors_SHT3x_Datasheet_digital-971521.pdf,,,403-SHT30-ARP-B,Sensirion,2.15 USD,SHT30-DIS-B,DFN-8 Sensirion,SENSOR HUMID/TEMP 5V I2C 3% SMD
+34,,oledDisplay-RESCUE-jarvis_shield,U3,oledDisplay,oled_display_0.96,1,DOCUMENTATION,,,,,,,,
+
+
+
+
+
+Component Groups:,34
+Component Count:,60
+Fitted Components:,60
+Number of PCBs:,1
+Total components:,60
+Schematic Version:,0.1
+Schematic Date:,2018-04-11
+BoM Date:,mi 01 ago 2018 10:44:28 CEST
+Schematic Source:,/media/david/Nano/Nano/jarwis/jarvis_shield.sch
+KiCad Version:,Eeschema 4.0.7-e2-6376~58~ubuntu16.04.1
